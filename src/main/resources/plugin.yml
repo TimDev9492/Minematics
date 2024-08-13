@@ -1,0 +1,5 @@
+name: Minematics
+version: '1.0-SNAPSHOT'
+main: me.timwastaken.minematics.Minematics
+api-version: '1.21'
+depend: [CommandAPI]
