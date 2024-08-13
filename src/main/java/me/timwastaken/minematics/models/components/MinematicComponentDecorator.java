@@ -1,12 +1,16 @@
 package me.timwastaken.minematics.models.components;
 
+import me.timwastaken.minematics.models.template.GenericMinematicComponent;
 import me.timwastaken.minematics.models.template.MinematicComponent;
 import org.bukkit.Location;
 import org.bukkit.util.Vector;
 
 public abstract class MinematicComponentDecorator extends MinematicComponent {
-    private MinematicComponent component;
+    private final MinematicComponent component;
 
+    public MinematicComponentDecorator() {
+        this.component = new GenericMinematicComponent();
+    }
     public MinematicComponentDecorator(MinematicComponent component) {
         this.component = component;
     }

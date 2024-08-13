@@ -15,7 +15,7 @@ public abstract class MinematicComponent extends MinematicEntity {
     }
 
     public void setPosition(Location position) {
-        this.position = position;
+        this.position = new Location(position.getWorld(), position.getX(), position.getY(), position.getZ());
     }
 
     public Vector getDirection() {

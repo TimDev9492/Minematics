@@ -21,4 +21,6 @@ public class RelativePositionComponent extends MinematicComponentDecorator {
     public Location getPosition() {
         return parent.getPosition().clone().add(super.getPosition());
     }
+
+
 }

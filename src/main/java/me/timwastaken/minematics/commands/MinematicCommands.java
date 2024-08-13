@@ -4,7 +4,9 @@ import dev.jorel.commandapi.CommandAPICommand;
 import dev.jorel.commandapi.CommandPermission;
 import dev.jorel.commandapi.arguments.*;
 import me.timwastaken.minematics.engine.MinematicEngine;
+import me.timwastaken.minematics.events.ItemActionRegistry;
 import me.timwastaken.minematics.models.MinematicChain;
+import me.timwastaken.minematics.models.MinematicFabrikChain;
 import me.timwastaken.minematics.models.MinematicFactory;
 import me.timwastaken.minematics.models.template.MinematicEntity;
 import org.bukkit.Location;
@@ -37,7 +39,7 @@ public class MinematicCommands {
 
                     float segmentLength = chainLength / numSegments;
 
-                    MinematicEntity chain = new MinematicChain(
+                    MinematicEntity chain = new MinematicFabrikChain(
                             itemMaterial.getType(),
                             baseBlock,
                             segmentLength,
@@ -69,6 +71,13 @@ public class MinematicCommands {
                             new Vector(1, 0, 0)
                     );
                     MinematicEngine.getInstance().trackEntity(blockEntity);
+                })
+                .register();
+
+        new CommandAPICommand("items")
+                .withPermission(CommandPermission.OP)
+                .executesPlayer((sender, args) -> {
+                    ItemActionRegistry.getTriggerItems().forEach(sender.getInventory()::addItem);
                 })
                 .register();
     }
