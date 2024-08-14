@@ -2,6 +2,7 @@ package me.timwastaken.minematics.models;
 
 import me.timwastaken.minematics.common.exceptions.CannotReachException;
 import me.timwastaken.minematics.models.components.BlockComponent;
+import me.timwastaken.minematics.models.template.MinematicEntity;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.util.Vector;
@@ -18,7 +19,37 @@ public class MinematicFabrikChain extends MinematicChain {
         || this.getBase().getPosition().distanceSquared(target) > this.chainLength * this.chainLength) {
             throw new CannotReachException("Target is too far away!");
         }
+        this.straightenTowards(target);
         this.fabrik(target);
+    }
+
+    /**
+     * Straighten the chain towards a target.
+     * @param target the target to straighten towards
+     */
+    public void straightenTowards(Location target) {
+        Vector horizontalDirection = target.clone()
+                .subtract(this.getBase().getPosition())
+                .toVector();
+        horizontalDirection.setY(0).normalize();
+
+        double horizBaseDirComponent = this.getBase().getDirection().clone()
+                .setY(0).distance(new Vector(0, 0, 0));
+
+        Vector newDirection = new Vector(0, this.getBase().getDirection().getY(), 0)
+                .add(horizontalDirection.multiply(horizBaseDirComponent));
+
+        this.getBase().setDirection(newDirection.clone());
+        for (int i = 1; i < this.getChildren().size(); i++) {
+            BlockComponent segment = (BlockComponent) this.getChildren().get(i);
+            BlockComponent parent = (BlockComponent) this.getChildren().get(i-1);
+
+            Location parentTip = parent.getPosition().clone()
+                    .add(parent.getDirection().clone()
+                            .multiply(parent.getDimensions().getZ()));
+            segment.setPosition(parentTip);
+            segment.setDirection(newDirection.clone());
+        }
     }
 
     /**

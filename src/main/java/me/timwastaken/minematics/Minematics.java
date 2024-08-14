@@ -38,6 +38,14 @@ public final class Minematics extends JavaPlugin {
                 }
             });
         });
+        ItemActionRegistry.insertAction(Material.BLAZE_ROD, "Straighten", (player) -> {
+            MinematicEngine.getInstance().runAction((entity) -> {
+                if (entity instanceof MinematicFabrikChain chain) {
+                    player.playSound(chain.getBase().getPosition(), Sound.ENTITY_ARROW_SHOOT, 1, 1);
+                    chain.straightenTowards(player.getEyeLocation());
+                }
+            });
+        });
 
         // run minematic engine
         taskID = Bukkit.getServer().getScheduler().scheduleSyncRepeatingTask(this, () -> {
