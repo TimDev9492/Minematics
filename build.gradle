@@ -1,9 +1,22 @@
+import org.yaml.snakeyaml.Yaml
+
+// use snakeyaml in the build step to extract values from `plugin.yml`
+buildscript {
+    dependencies {
+        classpath("org.yaml:snakeyaml:2.2")
+    }
+}
+
 plugins {
     id 'java'
 }
 
+def plugin = new Yaml().load(new File("src/main/resources/plugin.yml").newInputStream())
+
 group = 'me.timwastaken'
-version = '1.0-SNAPSHOT'
+version = plugin.version
+
+def jarFile = String.format("%s-%s+%s.jar", plugin.name, version, plugin["api-version"])
 
 repositories {
     mavenCentral()
@@ -30,6 +43,10 @@ java {
     if (JavaVersion.current() < javaVersion) {
         toolchain.languageVersion = JavaLanguageVersion.of(targetJavaVersion)
     }
+}
+
+tasks.jar {
+    archiveFileName.set("$jarFile")
 }
 
 tasks.withType(JavaCompile).configureEach {
