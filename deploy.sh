@@ -12,7 +12,6 @@ if [ -z "$1" ]; then echo "No jar file provided!"; exit 1; fi
 if ! [ -f "$1" ]; then echo "File \"$1\" does not exist!"; exit 1; fi
 
 # upload the file
-echo "Uploading \"$1\" to \"$host\"..."
 sftp -i "$key_file" "$host" <<EOF
 put "$1" "$destination"
 EOF

@@ -57,11 +57,8 @@ tasks.withType(JavaCompile).configureEach {
     }
 }
 
-// create a task to copy the output files in build/libs to a destination folder
-task copyJar(type: Copy) {
-    from 'build/libs'
-    into 'C:/Users/kerst/Documents/minecraftServer/plugins/'
-    include '*.jar'
+task deploy(type: Exec) {
+    commandLine = [ "./deploy.sh", "build/libs/$jarFile" ]
 }
 
 processResources {
